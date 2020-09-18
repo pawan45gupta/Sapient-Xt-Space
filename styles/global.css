@@ -34,6 +34,7 @@ body {
 
 .menuLblText {
     width: 70%;
+    text-align: right;
 }
 
 .card {
@@ -61,8 +62,9 @@ body {
     background-color: #c4c4c4;
 }
 
-.bold{
+.bold {
     font-weight: bold;
+    padding: 2px;
 }
 
 .colorText {
