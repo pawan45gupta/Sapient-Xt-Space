@@ -18,6 +18,10 @@ body {
     border: none;
 }
 
+.buttonSelected {
+    background-color: #77a12a;
+}
+
 .button:hover {
     background-color: #77a12a;;
 }

@@ -54,16 +54,30 @@ export default function Home() {
         return newURL;
     }
 
+    function toggleButton(className, event) {
+      let buttons= document.getElementsByClassName(className);
+        for(let i = 0; i < buttons.length; i++) {
+          if(buttons[i].value == event.target.value) {
+            buttons[i].className = `button buttonSelected ${className}`;
+          } else {
+            buttons[i].className = `button ${className}`;
+          }
+        }
+    }
+
     function onLaunchYearClick(event) {
         setLaunchYear(event.target.value);
+        toggleButton("yearBtn", event);   
     }
 
     function onLaunchSuccessClick(event) {
         setLaunchSuccess(event.target.value.toString().toLowerCase());
+        toggleButton("launchSuccessBtn", event);
     }
 
     function onLandingSuccessClick(event) {
         setLandingSucess(event.target.value.toString().toLowerCase());
+        toggleButton("landingSuccessBtn", event);
     }
 
     return (
@@ -80,17 +94,17 @@ export default function Home() {
                     <hr/>
                     {   
                         defaultLaunchYears.map(year => 
-                        <Button className={"button"} value={year} onClick={onLaunchYearClick}/>
+                        <Button className={"button yearBtn"} value={year} onClick={onLaunchYearClick}/>
                     )}
                     <div className="menuLblText">Successful Launch</div>
                     <hr/>
-                    <Button className={"button"} value={"True"} onClick={onLaunchSuccessClick}/>
-                    <Button className={"button"} value={"False"} onClick={onLaunchSuccessClick}/>
+                    <Button className={"button launchSuccessBtn"} value={"True"} onClick={onLaunchSuccessClick}/>
+                    <Button className={"button launchSuccessBtn"} value={"False"} onClick={onLaunchSuccessClick}/>
                     <div className="menuLblText">Successful Landing</div>
                     <hr/>
                     <div>
-                    <Button className={"button"} value={"True"} onClick={onLandingSuccessClick}/>
-                    <Button className={"button"} value={"False"} onClick={onLandingSuccessClick}/>
+                    <Button className={"button landingSuccessBtn"} value={"True"} onClick={onLandingSuccessClick}/>
+                    <Button className={"button landingSuccessBtn"} value={"False"} onClick={onLandingSuccessClick}/>
                     </div>
                 </div>
                 <div className="cardsContainer">
