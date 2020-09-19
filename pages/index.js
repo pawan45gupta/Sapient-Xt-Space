@@ -55,20 +55,14 @@ export default function Home() {
     }
 
     function onLaunchYearClick(event) {
-        event.preventDefault();
-        event.stopPropagation();
         setLaunchYear(event.target.value);
     }
 
     function onLaunchSuccessClick(event) {
-        event.preventDefault();
-        event.stopPropagation();
         setLaunchSuccess(event.target.value.toString().toLowerCase());
     }
 
     function onLandingSuccessClick(event) {
-        event.preventDefault();
-        event.stopPropagation();
         setLandingSucess(event.target.value.toString().toLowerCase());
     }
 
@@ -100,7 +94,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="cardsContainer">
-                    <Cards data={initialData} launchSuccess={launchSuccess} landingSuccess={landingSuccess} />
+                    <Cards data={initialData} />
                 </div>
                 { hasError ? <span>{JSON.stringify(hasError)}</span> : null }
                 <div className="footer col-12 col-s-12">Developed By:Pawan Gupta</div>

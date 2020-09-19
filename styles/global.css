@@ -12,7 +12,7 @@ body {
     background-color: #c5e09b;
     margin: 10px;
     padding: 10px;
-    width: 43%;
+    width: 40%;
     float: left;
     height: auto;
     border: none;
@@ -102,7 +102,7 @@ body {
    width: 100%;
   }
   /* For mobile phones: */
-  @media only screen and (max-width: 699px) {
+  @media only screen and (max-width: 700px) {
     .menuLblText {
         width: 58%;
         text-align: right;
@@ -123,6 +123,10 @@ body {
     .col-s-10 {width: 83.33%;}
     .col-s-11 {width: 91.66%;}
     .col-s-12 {width: 100%;}
+    .menuLblText {
+        width: 60%;
+        text-align: right;
+    }
   }
   @media only screen and (min-width: 1024px) {
     /* For desktop: */
