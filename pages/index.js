@@ -2,13 +2,12 @@ import Head from 'next/head';
 import Button from '../Components/Button';
 import React, { useState, useEffect } from "react";
 import Cards from '../Components/Cards';
+import { useRouter } from 'next/router';
 
 export default function Home() {
     const [hasError, setErrors] = useState(false);
     const [initialData, setInitialData] = useState([]);
-    const [launchYear, setLaunchYear] = useState(null);
-    const [launchSuccess, setLaunchSuccess] = useState(null);
-    const [landingSuccess, setLandingSucess] = useState(null);
+    const router = useRouter();
     const url = "https://api.spacexdata.com/v3/launches?limit=100";
     const defaultLaunchYears = [
         2006,
@@ -27,7 +26,7 @@ export default function Home() {
         2019,
         2020
     ];
-  
+
     async function fetchData() {
       const res = await fetch(getNewApiUrl());
       res
@@ -38,26 +37,31 @@ export default function Home() {
   
     useEffect(() => {
       fetchData();
-    },[launchYear, landingSuccess, launchSuccess]);
+    },[router.query]);
 
     function getNewApiUrl() {
-        let newURL = url;
-        if(launchYear) {
-            newURL = newURL.concat('&launch_year=', launchYear);
-        }
-        if(launchSuccess) {
-            newURL = newURL.concat('&launch_success=', launchSuccess);
-        }
-        if(landingSuccess) {
-            newURL = newURL.concat('&landing_success=', landingSuccess);
-        }
-        return newURL;
+      let newURL = url;
+      let { launch_year, launch_success, landing_success } = router.query;
+
+      if(launch_year) {
+          newURL = newURL.concat('&launch_year=', launch_year);
+          toggleButton("yearBtn", launch_year);
+      }
+      if(launch_success != undefined && launch_success != null) {
+          newURL = newURL.concat('&launch_success=', launch_success);
+          toggleButton("launchSuccessBtn", launch_success);
+      }
+      if(landing_success != undefined && landing_success != null) {
+          newURL = newURL.concat('&landing_success=', landing_success);
+          toggleButton("landingSuccessBtn", landing_success);
+      }
+      return newURL;
     }
 
-    function toggleButton(className, event) {
+    function toggleButton(className, targetValue) {
       let buttons= document.getElementsByClassName(className);
         for(let i = 0; i < buttons.length; i++) {
-          if(buttons[i].value == event.target.value) {
+          if(buttons[i].value.toLowerCase() == targetValue) {
             buttons[i].className = `button buttonSelected ${className}`;
           } else {
             buttons[i].className = `button ${className}`;
@@ -66,18 +70,45 @@ export default function Home() {
     }
 
     function onLaunchYearClick(event) {
-        setLaunchYear(event.target.value);
-        toggleButton("yearBtn", event);   
+      router.push({ query: getQuery('launch_year', event.target.value) });
+      toggleButton("yearBtn", event.target.value);   
     }
 
     function onLaunchSuccessClick(event) {
-        setLaunchSuccess(event.target.value.toString().toLowerCase());
-        toggleButton("launchSuccessBtn", event);
+      router.push({ query: getQuery('launch_success', event.target.value.toString().toLowerCase()) });
+      toggleButton("launchSuccessBtn", event.target.value);
     }
 
     function onLandingSuccessClick(event) {
-        setLandingSucess(event.target.value.toString().toLowerCase());
-        toggleButton("landingSuccessBtn", event);
+      router.push({ query: getQuery('landing_success', event.target.value.toString().toLowerCase()) });
+      toggleButton("landingSuccessBtn", event.target.value);
+    }
+
+    function getQuery(typeName, value) {
+      let query = {};
+      let { launch_year, launch_success, landing_success } = router.query;
+
+      if(typeName == 'launch_year') {
+        query["launch_year"] = value;
+        if(launch_success != undefined && launch_success != null)
+          query["launch_success"] = launch_success;
+        if(landing_success != undefined && landing_success != null) 
+          query["landing_success"] = landing_success;
+      } else if(typeName == 'launch_success') {
+        if(launch_year)
+          query["launch_year"] = launch_year;
+        query["launch_success"] = value;
+        if(landing_success != undefined && landing_success != null) 
+          query["landing_success"] = landing_success;
+      } else if(typeName == 'landing_success') {
+        if(launch_year)
+          query["launch_year"] = launch_year;
+        if(launch_success != undefined && launch_success != null)
+          query["launch_success"] = launch_success;
+        query["landing_success"] = value;
+      }
+
+      return query;
     }
 
     return (
